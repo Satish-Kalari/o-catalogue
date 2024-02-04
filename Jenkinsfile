@@ -21,7 +21,7 @@ pipeline {
       
     // BUILD
     stages {
-        stage('Getting Package Ver No') {
+        stage('Getting Package Ver') {
             steps {
                 script {
                     def packageJson = readJSON file: 'package.json'
