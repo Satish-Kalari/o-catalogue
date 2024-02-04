@@ -6,7 +6,8 @@ pipeline {
     }
     environment { 
         packageVersion = '' 
-        nexusURL = '3.236.186.185:8081'      
+        // nexus ec2 private ip with 8081
+        nexusURL = '172.31.6.80:8081'      
     }
     options {
         ansiColor('xterm')
@@ -65,7 +66,7 @@ pipeline {
                 script {
                         def params = [
                             string(name: 'version', value: "$packageVersion"),
-                            string(name: 'environment', value: "dev")
+                            string(name: 'environment', value: 'dev')
                         ]
                         build job: "catalogue-deploy", wait: true, parameters: params
                 }
