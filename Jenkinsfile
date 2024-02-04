@@ -11,7 +11,7 @@ pipeline {
         // ansiColor('xterm')
         // timeout(time: 1, unit: 'HOURS')
         // disableConcurrentBuilds()
-    }
+    // }
    
     // build
     stages {
@@ -67,7 +67,7 @@ pipeline {
                             string(name: 'environment', value: "dev")
                         ]
                         build job: "catalogue-deploy", wait: true, parameters: params
-                    }
+                }
             }
         }
     }
