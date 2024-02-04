@@ -8,7 +8,7 @@ pipeline {
     // Just like variables 
     environment {
         packageVersion = ''
-        nexusURL = '<place nexsus ec2 instance public ip adddress here>:8081'        
+        // nexusURL = '<place nexsus ec2 instance public ip adddress here>:8081'        
     }
     
     // Terminating Build if it takes certain time
