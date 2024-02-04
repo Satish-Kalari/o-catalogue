@@ -3,42 +3,45 @@ pipeline {
         node {
             label 'AGENT-1'
         }
-    } 
-
-    // Just like variables 
-    environment {
+    }
+    environment { 
         packageVersion = ''
-        // nexusURL = '<place nexsus ec2 instance public ip adddress here>:8081'        
+        // nexusURL = '172.31.5.95:8081'
     }
-    
-    // Terminating Build if it takes certain time
-     options {
-        ansiColor("xterm")
+    options {
         timeout(time: 1, unit: 'HOURS')
-        // dose not allow two pipleline builds at a time 
-        disableConcurrentBuilds() 
+        disableConcurrentBuilds()
     }
-      
-    // BUILD
+    // parameters {
+    //     string(name: 'PERSON', defaultValue: 'Mr Jenkins', description: 'Who should I say hello to?')
+
+    //     text(name: 'BIOGRAPHY', defaultValue: '', description: 'Enter some information about the person')
+
+    //     booleanParam(name: 'TOGGLE', defaultValue: true, description: 'Toggle this value')
+
+    //     choice(name: 'CHOICE', choices: ['One', 'Two', 'Three'], description: 'Pick something')
+
+    //     password(name: 'PASSWORD', defaultValue: 'SECRET', description: 'Enter a password')
+    // }
+    // build
     stages {
-        stage('Getting Package Ver') {
+        stage('Get the version') {
             steps {
                 script {
                     def packageJson = readJSON file: 'package.json'
-                    packageVersion = packageJson.version 
-                    echo "Aplication Ver No: $packageVersion"
+                    packageVersion = packageJson.version
+                    echo "application version: $packageVersion"
                 }
             }
         }
-        stage('Install Dependencies') {
+        stage('Install dependencies') {
             steps {
                 sh """
                     npm install
                 """
             }
         }
-        
-         stage('Build') {
+        stage('Build') {
             steps {
                 sh """
                     ls -la
@@ -47,51 +50,48 @@ pipeline {
                 """
             }
         }
-        // stage('Publish Artifact') {
-        //     steps {
-        //          nexusArtifactUploader(
-        //             nexusVersion: 'nexus3',
-        //             protocol: 'http',
-        //             nexusUrl: "${nexusURL}",
-        //             groupId: 'com.roboshop',
-        //             version: "${packageVersion}",
-        //             repository: 'catalogue',
-        //             credentialsId: 'nexus-auth',
-        //             artifacts: [
-        //                 [artifactId: 'catalogue',
-        //                 classifier: '',
-        //                 file: 'catalogue.zip',
-        //                 type: 'zip']
-        //             ]
-        //         )
-        //     }
-        // }
-        // stage('Deploy') {
-        //     steps {
-        //         script {
-        //                 def params = [
-        //                     string(name: 'version', value: "$packageVersion"),
-        //                     string(name: 'environment', value: "dev")
-        //                 ]
-        //                 build job: "catalogue-deploy", wait: true, parameters: params
-        //             }
-        //     }
-        // }
-              
+        stage('Publish Artifact') {
+            steps {
+                 nexusArtifactUploader(
+                    nexusVersion: 'nexus3',
+                    protocol: 'http',
+                    nexusUrl: "${nexusURL}",
+                    groupId: 'com.roboshop',
+                    version: "${packageVersion}",
+                    repository: 'catalogue',
+                    credentialsId: 'nexus-auth',
+                    artifacts: [
+                        [artifactId: 'catalogue',
+                        classifier: '',
+                        file: 'catalogue.zip',
+                        type: 'zip']
+                    ]
+                )
+            }
+        }
+        stage('Deploy') {
+            steps {
+                script {
+                        def params = [
+                            string(name: 'version', value: "$packageVersion"),
+                            string(name: 'environment', value: "dev")
+                        ]
+                        build job: "catalogue-deploy", wait: true, parameters: params
+                    }
+            }
+        }
     }
-
-    // POST BUILD
+    // post build
     post { 
         always { 
             echo 'I will always say Hello again!'
-            // This will remove pipleline log files
-            deleteDir() 
+            deleteDir()
         }
-         failure { 
-            echo 'This runs when pipeline is failed, used set alert'
+        failure { 
+            echo 'this runs when pipeline is failed, used generally to send some alerts'
         }
-         success { 
-            echo 'This runs when pipeline is SUCCESS'
+        success{
+            echo 'I will say Hello when pipeline is success'
         }
     }
 }
