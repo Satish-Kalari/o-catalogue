@@ -6,13 +6,13 @@ pipeline {
     }
     environment { 
         packageVersion = '' 
-        nexusURL = '3.236.186.185:8081/'      
+        nexusURL = '3.236.186.185:8081'      
     }
-    // options {
-        // ansiColor('xterm')
-        // timeout(time: 1, unit: 'HOURS')
-        // disableConcurrentBuilds()
-    // }
+    options {
+        ansiColor('xterm')
+        timeout(time: 1, unit: 'HOURS')
+        disableConcurrentBuilds()
+    }
    
     // build
     stages {
