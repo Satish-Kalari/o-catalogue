@@ -7,7 +7,7 @@ pipeline {
     environment { 
         packageVersion = ''       
     }
-    options {
+    // options {
         // ansiColor('xterm')
         // timeout(time: 1, unit: 'HOURS')
         // disableConcurrentBuilds()
