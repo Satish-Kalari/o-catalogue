@@ -7,7 +7,7 @@ pipeline {
     environment { 
         packageVersion = '' 
         // nexus ec2 private ip with 8081
-        nexusURL = '172.31.6.80:8081'      
+        nexusURL = '172.31.6.198:8081'      
     }
     options {
         ansiColor('xterm')
