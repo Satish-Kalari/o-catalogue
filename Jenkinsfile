@@ -66,7 +66,7 @@ pipeline {
                 script {
                         def params = [
                             string(name: 'version', value: "$packageVersion"),
-                            string(name: 'environment', value: 'dev')
+                            string(name: 'environment', value: "dev")
                         ]
                         build job: "catalogue-deploy", wait: true, parameters: params
                 }
@@ -77,6 +77,7 @@ pipeline {
     post { 
         always { 
             echo 'I will always say Hello again!'
+            // remove workspace folder in pipleline 
             deleteDir()
         }
         failure { 
