@@ -7,3 +7,9 @@ def configMap =[
     application: "nodejsVM",
     componenet: "catalogue"
 ]
+if( ! env.BRANCH_NAME.equalsIgnoreCase( 'master' ))
+pipelineDecission.decidePipeline(configMap)
+
+else{
+    echo "This is PRODUCTION, deal with CR process"
+}
