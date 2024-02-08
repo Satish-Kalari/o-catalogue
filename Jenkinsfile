@@ -1,2 +1,2 @@
 #!groovy
-@Library('o-robo-shared-library')
+@Library('o-robo-shared-library') _
